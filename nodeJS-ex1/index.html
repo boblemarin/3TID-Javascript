@@ -1,0 +1,59 @@
+<html>
+<head>
+	<title>Socket, Yo !</title>
+	<style type="text/css">
+
+	input {
+		width: 500px;
+		border: 1px solid black;
+	}
+	</style>
+</head>
+<body>
+
+<form onsubmit="sendMessage(event);">
+	<input type="text" id="chatMessage"/>
+</form>
+
+<ul id="chatContent"></ul>
+<div id="audioContainer"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect('http://localhost'),
+		msgField = document.getElementById("chatMessage"),
+  		chatContent = document.getElementById("chatContent"),
+  		tts = document.getElementById("audioContainer");
+
+
+	socket.on('chat', function (data) {
+		// remove old sounds
+		while(tts.childNodes.length){
+			tts.removeChild( tts.childNodes[0] );
+		}
+
+		// display message in chat area
+		chatContent.innerHTML += "<li>" + data.message + "</li>";
+
+		// play sound from google tts
+		var odio = new Audio('http://translate.google.com/translate_tts?ie=UTF-8&q='+data.message+'&tl=en');
+		odio.autoplay = true;
+		odio.controls = true;
+		tts.appendChild(odio);
+		//odio.play();
+	});
+
+  
+  function sendMessage(event) {
+	socket.emit('chat', { message: msgField.value });
+	msgField.value = "";
+  	event.preventDefault();
+  }
+</script>
+
+
+
+
+
+
+</body>
+</html>

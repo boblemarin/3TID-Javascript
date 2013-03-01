@@ -1,0 +1,30 @@
+<html>
+<head>
+	<title>My chat</title>
+</head>
+<body>
+	<form onsubmit="sendChatMessage(event);">
+		<input type="text" id="chatInputField" /> 
+	</form>
+	<ul id="chatOutput">
+		<li>chat:</li>
+	</ul>
+	<script src="/socket.io/socket.io.js"></script>
+<script>
+	var socket = io.connect('http://localhost'),
+		inField = document.getElementById("chatInputField"),
+		outList = document.getElementById("chatOutput");
+
+	function sendChatMessage(event){
+		socket.emit('chat', { msg: inField.value });
+		inField.value = "";
+		event.preventDefault();
+	}
+
+	socket.on("chat",function(data){
+		outList.innerHTML += "<li>" + data.msg + "</li>";
+	});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,13 @@
+Get Started with Heroku
+
+
+	1.	heroku login
+	2.	Email: emeric@minimal.be
+	3.	Password: your-password
+
+App creation
+	1.	git clone git://github.com/heroku/node-js-sample.git
+	2.	cd node-js-sample
+	3.	heroku create
+	4.	git push heroku master
+	5.	heroku open
